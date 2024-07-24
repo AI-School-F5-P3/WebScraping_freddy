@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 import pandas as pd
 
 
+
 class Database:
     def __init__(self, host='localhost', user='root', password='', database='web_scraping'):
         self.conn = mysql.connector.connect(

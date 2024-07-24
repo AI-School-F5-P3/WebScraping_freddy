@@ -31,24 +31,57 @@ Para iniciar la actualización automática: python src/auto_update.py
 ## Estructura del Proyecto
 
 web-scraping-project/
+│   .gitignore
+│   Dockerfile
+│   README.md
+│   requirements.txt
 │
-├── src/
-│   ├── scraper.py
-│   ├── database.py
-│   ├── main.py
-│   └── auto_update.py
+├───.pytest_cache
+│   │   .gitignore
+│   │   CACHEDIR.TAG
+│   │   README.md
+│   │
+│   └───v
+│       └───cache
+│               lastfailed
+│               nodeids
+│               stepwise
 │
-├── tests/
-│   └── test_scraper.py
+├───frontend
+│   │   app.py
+│   │
+│   ├───static
+│   │       styles.css
+│   │
+│   └───templates
+│           index.html
+│           quotes.html
 │
-├── logs/
-│   ├── scraper.log
-│   └── auto_update.log
+├───logs
+│       auto_update.log
+│       frontend.log
+│       scraper.log
 │
-├── requirements.txt
-├── Dockerfile
-├── .gitignore
-└── README.md
+├───src
+│   │   auto_update.py
+│   │   database.py
+│   │   main.py
+│   │   scraper.py
+│   │   __init__.py
+│   │
+│   └───__pycache__
+│           auto_update.cpython-312.pyc
+│           database.cpython-312.pyc
+│           scraper.cpython-312.pyc
+│           __init__.cpython-312.pyc
+│
+└───test
+    │   test_scraper.py
+    │   __init__.py
+    │
+    └───__pycache__
+            test_scraper.cpython-312-pytest-8.3.1.pyc
+            __init__.cpython-312.pyc
 
 ## Tecnologías Utilizadas
 
