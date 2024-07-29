@@ -30,29 +30,50 @@ def index():
 
 @app.route('/search')
 def search():
-    tags = request.args.get('query', '').split(',')
-    author = request.args.get('author', '')
-    db = Database()
-    
-    quotes = db.get_all_quotes()
-    
-    if tags and tags[0]:
-        quotes = quotes[quotes['tags'].apply(lambda x: any(tag.strip().lower() in x.lower() for tag in tags))]
-    
-    if author:
-        quotes = quotes[quotes['author'].str.lower() == author.lower()]
-    
-    db.close()
-    return render_template('quotes.html', quotes=quotes.to_dict('records'))
+    try:
+        tags = request.args.get('query', '').split(',')
+        author = request.args.get('author', '')
+        db = Database()
+        quotes = db.get_all_quotes()
+        
+        if tags and tags[0]:
+            quotes = quotes[quotes['tags'].apply(lambda x: any(tag.strip().lower() in x.lower() for tag in tags))]
+        
+        if author:
+            quotes = quotes[quotes['author'].str.lower() == author.lower()]
+        
+        db.close()
+        return render_template('quotes.html', quotes=quotes.to_dict('records'))
+    except Exception as e:
+        logging.error(f"Error en la búsqueda: {str(e)}")
+        return "Error en la búsqueda", 500
 
 @app.route('/get_filters')
 def get_filters():
-    db = Database()
-    all_quotes = db.get_all_quotes()
-    tags = set(tag.strip() for tags in all_quotes['tags'].str.split(',') for tag in tags)
-    authors = set(all_quotes['author'])
-    db.close()
-    return jsonify({'tags': sorted(list(tags)), 'authors': sorted(list(authors))})
+    try:
+        db = Database()
+        all_quotes = db.get_all_quotes()
+        logging.info(f"Columns in all_quotes: {all_quotes.columns}")
+        logging.info(f"Sample of tags: {all_quotes['tags'].head()}")
+        logging.info(f"Sample of authors: {all_quotes['author'].head()}")
+        
+        # Manejo de tags
+        tags = set()
+        if 'tags' in all_quotes.columns:
+            for tag_str in all_quotes['tags'].dropna():
+                if isinstance(tag_str, str):
+                    tags.update(tag.strip() for tag in tag_str.split(','))
+        
+        # Manejo de autores
+        authors = set()
+        if 'author' in all_quotes.columns:
+            authors = set(author for author in all_quotes['author'].dropna() if isinstance(author, str))
+        
+        db.close()
+        return jsonify({'tags': sorted(list(tags)), 'authors': sorted(list(authors))})
+    except Exception as e:
+        logging.error(f"Error en get_filters: {str(e)}")
+        return jsonify({'tags': [], 'authors': []}), 500
 
 if __name__ == '__main__':
     print("Starting Flask server...")

@@ -5,7 +5,7 @@ import pandas as pd
 
 
 class Database:
-    def __init__(self, host='localhost', user='root', password='', database='web_scraping'):
+    def __init__(self, host='localhost', user='root', password='', database='scraping_web'):
         self.conn = mysql.connector.connect(
             host=host,
             user=user,
