@@ -114,12 +114,6 @@ Por defecto, este script actualizará la base de datos cada 24 horas. Puedes mod
 
 Para ejecutar los tests unitarios: pytest
 
-## Docker
-
-El proyecto incluye un Dockerfile para containerizar la aplicación. Para construir y ejecutar el contenedor:
-docker build -t web-scraping-project .
-docker run web-scraping-project
-
 ## Notas
 
 - Asegúrate de tener un servidor MySQL en ejecución y actualiza las credenciales en `src/database.py` antes de ejecutar el script.
